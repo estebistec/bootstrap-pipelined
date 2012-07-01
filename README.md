@@ -35,6 +35,8 @@ To preview a production setting
 
 To stop nginx: `nginx -s stop`
 
+**NOTE** I run nginx on Mac OSX, as installed by [homebrew](http://mxcl.github.com/homebrew). YMMV on Linux or Windows.
+
 ## Updating Twitter Bootstrap
 
 The Bootstrap git submodule can be updated as follows:

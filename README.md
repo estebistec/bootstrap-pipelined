@@ -12,8 +12,9 @@ The purpose of this project is two-fold.
 
 ## Obtaining
 
- * clone this project
- * git submodule update --init # Pull in the Twitter Bootstrap git submodule
+ * `git clone git://github.com/estebistec/bootstrap-pipelined.git`
+ * `cd bootstrap-pipelined`
+ * `git submodule update --init # Pull in the Twitter Bootstrap git submodule`
 
 ## Running in development mode
 

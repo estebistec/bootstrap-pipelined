@@ -7,5 +7,18 @@
 {% endblock %}
 {% block content %}
 <div class="row">
+  {% blocktrans %}
+    <p>This is a simple template project utilizing
+      <a href="http://twitter.github.com/bootstrap">Twitter Bootstrap</a>,
+      and managing static assets with
+      <a href="http://django-pipeline.readthedocs.org">django-pipeline</a>.
+      The purpose of this project is two-fold.</p>
+    <ul>
+      <li>Keep a template project that can be improved later</li>
+      <li>Compare django-pipeline with other methods of managing static
+        assets with Django</li>
+    </ul>
+    <p>For more info see the project README.</p>
+  {% endblocktrans %}
 </div>
 {% endblock %}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load compressed i18n %}
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="{{ LANGUAGE_CODE }}"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="{{ LANGUAGE_CODE }}"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="{{ LANGUAGE_CODE }}"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="{{ LANGUAGE_CODE }}"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>{% block title %}{% trans "Bootstrap Pipelined" %}{% endblock %}</title>
+  <meta name="viewport" content="width=device-width">
+  {% compressed_css 'standard' %}
+  <script src="{{ STATIC_URL }}js/lib/modernizr-2.5.3.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
+         chromium.org/developers/how-tos/chrome-frame-getting-started -->
+    <!--[if lt IE 7]><p class="chromeframe">Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+    <header>{% block header %}{% endblock %}</header>
+    {% if messages %}
+      <section>
+        {% for message in messages %}
+          <div class="alert{% if message.tags %} {{ message.tags }}{% endif %}">
+            <button class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+          </div>
+        {% endfor %}
+      </section>
+    {% endif %}
+    <section>{% block content %}{% endblock %}</section>
+    <footer>{% block footer %}{% endblock %}</footer>
+  </div>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/lib/jquery-1.7.2.min.js"><\/script>')</script>
+  {% compressed_js 'standard' %}
+  {% if GOOGLE_ANALYTICS_KEY %}
+    <script>
+      var _gaq=[['_setAccount','{{ GOOGLE_ANALYTICS_KEY }}'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));
+    </script>
+  {% endif %}
+</body>
+</html>

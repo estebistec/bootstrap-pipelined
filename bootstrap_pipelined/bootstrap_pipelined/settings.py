@@ -1,10 +1,21 @@
 # Django settings for bootstrap_pipelined project.
 
+
+import os
+
+from django.contrib.messages import constants as messages
+
+
+# Setup some useful points of reference programmically
+PUBLIC_APP = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(PUBLIC_APP)
+SOURCE_ROOT = os.path.dirname(PROJECT_ROOT)
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Steven Cummings', 'estebistec@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -59,7 +70,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(SOURCE_ROOT, 'static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -78,6 +89,49 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
+PIPELINE_STORAGE = 'pipeline.storage.PipelineFinderStorage'
+
+PIPELINE_CSS = {
+    'standard': {
+        'source_filenames': (
+            'less/bootstrap.less',
+        ),
+        'output_filename': 'css/s.min.css',
+        'extra_context': {
+            'media': 'screen,projection',
+        },
+    },
+}
+
+PIPELINE_JS = {
+    'standard': {
+        'source_filenames': (
+            'js/bootstrap-alert.js',
+            'js/bootstrap-button.js',
+            'js/bootstrap-carousel.js',
+            'js/bootstrap-collapse.js',
+            'js/bootstrap-dropdown.js',
+            'js/bootstrap-modal.js',
+            'js/bootstrap-popover.js',
+            'js/bootstrap-scrollspy.js',
+            'js/bootstrap-tab.js',
+            'js/bootstrap-tooltip.js',
+            'js/bootstrap-transition.js',
+            'js/bootstrap-typeahead.js',
+        ),
+        'output_filename': 'js/s.min.js',
+    }
+}
+
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.jsmin.JSMinCompressor'
+PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CssminCompressor'
+
+PIPELINE_COMPILERS = (
+  'pipeline.compilers.less.LessCompiler',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -110,6 +164,26 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
+    "bootstrap_pipelined.context_processors.google_analytics_key",
+)
+
+# Setup tags to use Twitter Bootstrap alert styles
+MESSAGE_TAGS = {
+    messages.DEBUG: '',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: '',
+    messages.ERROR: 'alert-error',
+}
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -123,6 +197,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'bootstrap_pipelined',
     'twitter_bootstrap',
+    'pipeline',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -133,19 +208,31 @@ INSTALLED_APPS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
     },
     'handlers': {
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'simple'
+        },
         'mail_admins': {
             'level': 'ERROR',
-            'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         }
     },
     'loggers': {
+        'django': {
+            'handlers':['console'],
+            'propagate': True,
+            'level':'INFO',
+        },
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
@@ -153,3 +240,6 @@ LOGGING = {
         },
     }
 }
+
+
+GOOGLE_ANALYTICS_KEY = None # 'UA-XXXXX-X'

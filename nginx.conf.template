@@ -19,7 +19,7 @@ http {
     error_log    logs/nginx-error.log;
 
     location /static/  {
-      root    /path/to/this/dir/; # note the trailing '/'
+      root    SOURCE_ROOT;
     }
 
     location / {

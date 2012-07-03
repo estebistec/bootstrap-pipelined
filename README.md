@@ -19,21 +19,18 @@ The purpose of this project is two-fold.
 ## Running in development mode
 
  * `cd bootstrap_pipelined`
- * `python manage.py collectstatic --noinput`
- * `python manage.py runserver`
+ * `./manage.py collectstatic --noinput`
+ * `./manage.py runserver`
 
-## Running in "production" mode
+## Running an nginx "production" setup
 
-To preview a production setting
+Run the following command from the source root directory:
 
-  * Set `DEBUG = False` in `settings.py`
-  * `cp nginx.conf.template nginx.conf` and make necessary modifications
-  * `nginx -c $(pwd)/nginx.conf`
-  * `cd bootstrap_pipelined`
-  * `python manage.py collectstatic --noinput`
-  * `python manage.py runserver`
+  * `./run-nginx.sh`
 
-To stop nginx: `nginx -s stop`
+This script will run collectstatic, fire up nginx as the current user based on
+a local conf, and then run the Django app behind it. nginx will server your
+static files. After your terminate the Django app, nginx will stop too.
 
 **NOTE** I run nginx on Mac OSX, as installed by [homebrew](http://mxcl.github.com/homebrew). YMMV on Linux or Windows.
 
